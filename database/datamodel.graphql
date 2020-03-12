@@ -5,18 +5,9 @@ type Post {
   text: String!
 }
 
-type User {
-  id: ID! @id
-  email: String!
-  name: String!
-  courses: [Course!]!
-}
-
 type Course {
   id: ID! @id
+  published: Boolean! @default(value: false)
   name: String!
   description: String!
-  instructor: User!
-  price: Float!
-  published: Boolean! @default(value: false)
 }
