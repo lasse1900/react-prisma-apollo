@@ -13,7 +13,7 @@ const resolvers = {
       return ctx.db.query.post({ where: { id } }, info);
     },
     courseFeed(parent, args, ctx, info) {
-      return ctx.db.query.courses({ where: { isPublished: true } });
+      return ctx.db.query.courses({ where: { isPublished: true } }, info);
     }
   },
   Mutation: {
@@ -28,8 +28,31 @@ const resolvers = {
         info
       );
     },
+    createCourse(parent, { name, description }, ctx, info) {
+      return ctx.db.mutation.createCourse(
+        {
+          data: {
+            name,
+            description
+          }
+        },
+        info
+      );
+    },
+    updateCourse(parent, { id, name, description }, ctx, info) {
+      return ctx.db.mutation.updateCourse(
+        {
+          data: { name, description },
+          where: { id: id }
+        },
+        info
+      );
+    },
     deletePost(parent, { id }, ctx, info) {
       return ctx.db.mutation.deletePost({ where: { id } }, info);
+    },
+    deleteCourse(parent, { id }, ctx, info) {
+      return ctx.db.mutation.deleteCourse({ where: { id } }, info);
     },
     publish(parent, { id }, ctx, info) {
       return ctx.db.mutation.updatePost(
@@ -50,7 +73,7 @@ const server = new GraphQLServer({
     ...req,
     db: new Prisma({
       typeDefs: 'src/generated/prisma.graphql', // the auto-generated GraphQL schema of the Prisma API
-      endpoint: process.env.PRISMA_ENDPOINT,
+      endpoint: process.env.PRISMA_ENDPOINT, // the endpoint of the Prisma API
       debug: true // log all GraphQL queries & mutations sent to the Prisma API
       // secret: 'mysecret123', // only needed if specified in `database/prisma.yml`
     })

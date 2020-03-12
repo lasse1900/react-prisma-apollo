@@ -44,3 +44,17 @@ query CourseFeed {
     description
   }
 }
+
+mutation updateCourse {
+  updateCourse(id: "ck7oyuh0sci240986fufkswsg", name: "TS 2") {
+    name
+    description
+  }
+}
+
+mutation deleteCourse {
+  deleteCourse(id: "ck7oyuh0sci240986fufkswsg") {
+    name
+    description
+  }
+}
