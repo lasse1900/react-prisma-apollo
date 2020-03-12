@@ -1,0 +1,28 @@
+query askPosts {
+  posts {
+    id
+    title
+    isPublished
+  }
+}
+
+mutation CreateCourse {
+  createCourse(
+    data: {
+      name: "Build graphQl app"
+      description: "Udemy senior level"
+      price: 19
+      instructor: { create: { name: "Malik", email: "haider@gmail.com" } }
+    }
+  ) {
+    id
+    description
+  }
+}
+
+query allCourses {
+  courses {
+    id
+    name
+  }
+}
