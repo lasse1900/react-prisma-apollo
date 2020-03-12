@@ -4,10 +4,9 @@ type Post {
   title: String!
   text: String!
 }
-
 type Course {
   id: ID! @id
-  published: Boolean! @default(value: false)
+  isPublished: Boolean! @default(value: false)
   name: String!
   description: String!
 }

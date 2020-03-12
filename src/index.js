@@ -1,7 +1,6 @@
 const { GraphQLServer } = require('graphql-yoga');
 const { Prisma } = require('prisma-binding');
 require('dotenv').config();
-
 const resolvers = {
   Query: {
     feed(parent, args, ctx, info) {
@@ -12,6 +11,9 @@ const resolvers = {
     },
     post(parent, { id }, ctx, info) {
       return ctx.db.query.post({ where: { id } }, info);
+    },
+    courseFeed(parent, args, ctx, info) {
+      return ctx.db.query.courses({ where: { isPublished: true } });
     }
   },
   Mutation: {
@@ -48,7 +50,6 @@ const server = new GraphQLServer({
     ...req,
     db: new Prisma({
       typeDefs: 'src/generated/prisma.graphql', // the auto-generated GraphQL schema of the Prisma API
-      // endpoint: process.env.PRISMA_ENDPOINT, // the endpoint of the Prisma API
       endpoint: process.env.PRISMA_ENDPOINT,
       debug: true // log all GraphQL queries & mutations sent to the Prisma API
       // secret: 'mysecret123', // only needed if specified in `database/prisma.yml`

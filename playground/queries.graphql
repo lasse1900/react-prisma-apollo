@@ -26,3 +26,21 @@ query allCourses {
     name
   }
 }
+
+query Feed {
+  feed {
+    id
+    isPublished
+    title
+    text
+  }
+}
+
+query CourseFeed {
+  courseFeed {
+    id
+    isPublished
+    name
+    description
+  }
+}

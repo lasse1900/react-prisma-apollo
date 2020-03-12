@@ -1,5 +1,5 @@
 # source: https://eu1.prisma.sh/lauri-kyttala/react-prisma/dev
-# timestamp: Thu Mar 12 2020 17:23:56 GMT+0200 (Eastern European Standard Time)
+# timestamp: Thu Mar 12 2020 18:00:13 GMT+0200 (Eastern European Standard Time)
 
 type AggregateCourse {
   count: Int!
@@ -16,7 +16,7 @@ type BatchPayload {
 
 type Course implements Node {
   id: ID!
-  published: Boolean!
+  isPublished: Boolean!
   name: String!
   description: String!
 }
@@ -33,7 +33,7 @@ type CourseConnection {
 
 input CourseCreateInput {
   id: ID
-  published: Boolean
+  isPublished: Boolean
   name: String!
   description: String!
 }
@@ -50,8 +50,8 @@ type CourseEdge {
 enum CourseOrderByInput {
   id_ASC
   id_DESC
-  published_ASC
-  published_DESC
+  isPublished_ASC
+  isPublished_DESC
   name_ASC
   name_DESC
   description_ASC
@@ -60,7 +60,7 @@ enum CourseOrderByInput {
 
 type CoursePreviousValues {
   id: ID!
-  published: Boolean!
+  isPublished: Boolean!
   name: String!
   description: String!
 }
@@ -105,13 +105,13 @@ input CourseSubscriptionWhereInput {
 }
 
 input CourseUpdateInput {
-  published: Boolean
+  isPublished: Boolean
   name: String
   description: String
 }
 
 input CourseUpdateManyMutationInput {
-  published: Boolean
+  isPublished: Boolean
   name: String
   description: String
 }
@@ -165,10 +165,10 @@ input CourseWhereInput {
 
   """All values not ending with the given string."""
   id_not_ends_with: ID
-  published: Boolean
+  isPublished: Boolean
 
   """All values that are not equal to given value."""
-  published_not: Boolean
+  isPublished_not: Boolean
   name: String
 
   """All values that are not equal to given value."""
