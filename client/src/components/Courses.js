@@ -37,9 +37,11 @@ const Courses = () => {
           return data.courseFeed.map(
             ({ id, description, name, isPublished }) => {
               return (
-                <div key={id}>
-                  <p>Name: {name}, Description: {description} </p>
-                  <hr />
+                <div key={id} className="card container">
+                  <div className="card-body">
+                    <div className="card-title"><p>{name}</p></div>
+                    <div className="card-text">{description}</div>
+                  </div>
                 </div>
               );
             }
