@@ -34,7 +34,6 @@ class CreateCourse extends Component {
           <div className="container">
             <div className="card">
               <div className="card-title">
-                <h3>Add a Book</h3>
               </div>
               <div className="card-body">
                 <form onSubmit={async e => {
