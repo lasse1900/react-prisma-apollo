@@ -39,6 +39,7 @@ const Courses = () => {
               return (
                 <div key={id}>
                   <p>Name: {name}, Description: {description} </p>
+                  <hr />
                 </div>
               );
             }

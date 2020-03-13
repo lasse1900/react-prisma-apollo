@@ -15,7 +15,22 @@ class CreateCourse extends Component {
   render() {
     const { name, description } = this.state;
     return (
-      <Mutation mutation={CREATE_COURSE_MUTATION}>
+      <Mutation mutation={CREATE_COURSE_MUTATION}
+        update={(cache, mutationResults) => {
+
+          // fetch the courseFeed from the cache
+          const { courseFeed } = cache.readQuery({
+            query: COURSE_FEED_QUERY
+          })
+          debugger;
+          // update the courseFeed from the cche
+          cache.writeQuery({
+            query: COURSE_FEED_QUERY,
+            data: { courseFeed: courseFeed.concat([mutationResults.data.createCourse]) }
+          })
+        }}
+      >
+
         {(createCourse, { data, error, loading }) => (
           <div className="container">
             <div className="card">
@@ -54,8 +69,8 @@ class CreateCourse extends Component {
                       onChange={this.onChangeHandler}
                     />
                   </div>
-                  <button type="submit" className="btn btn-primary">
-                    Submit
+                  <button type="submit" className="btn btn-primary btn-block">
+                    Save
               </button>
                 </form>
               </div>
@@ -66,6 +81,16 @@ class CreateCourse extends Component {
     );
   }
 }
+const COURSE_FEED_QUERY = gql`
+  {
+    courseFeed {
+      id
+      name
+      description
+      isPublished
+    }
+  }
+`;
 const CREATE_COURSE_MUTATION = gql`
 mutation createCourseNew($name: String!, $description: String!) {
   createCourse(name: $name, description: $description) {
@@ -75,5 +100,5 @@ mutation createCourseNew($name: String!, $description: String!) {
     isPublished
   }
 }
-`
+`;
 export default CreateCourse;
