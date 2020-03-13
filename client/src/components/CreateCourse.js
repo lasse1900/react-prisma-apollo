@@ -17,12 +17,11 @@ class CreateCourse extends Component {
     return (
       <Mutation mutation={CREATE_COURSE_MUTATION}
         update={(cache, mutationResults) => {
-
           // fetch the courseFeed from the cache
           const { courseFeed } = cache.readQuery({
             query: COURSE_FEED_QUERY
           })
-          debugger;
+          // debugger;
           // update the courseFeed from the cche
           cache.writeQuery({
             query: COURSE_FEED_QUERY,
@@ -35,7 +34,7 @@ class CreateCourse extends Component {
           <div className="container">
             <div className="card">
               <div className="card-title">
-                <h3>Create Course</h3>
+                <h3>Add a Book</h3>
               </div>
               <div className="card-body">
                 <form onSubmit={async e => {
