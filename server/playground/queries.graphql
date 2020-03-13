@@ -58,3 +58,12 @@ mutation deleteCourse {
     description
   }
 }
+
+mutation createCourseNew($name: String!, $description: String!) {
+  createCourse(name: $name, description: $description) {
+    id
+    name
+    description
+    isPublished
+  }
+}
