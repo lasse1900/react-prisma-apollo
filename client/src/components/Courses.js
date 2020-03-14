@@ -1,5 +1,5 @@
 import React from 'react'
-import { Query } from 'react-apollo'
+import { Query, Mutation } from 'react-apollo'
 import { gql } from 'apollo-boost'
 import { Link } from 'react-router-dom';
 
@@ -18,18 +18,7 @@ const Courses = () => {
   return (
     <div>
       <Query
-        query={
-          gql`
-          {
-            courseFeed {
-              id
-              name
-              description
-              isPublished
-            }
-          }
-          `
-        }
+        query={COURSE_FEED_QUERY}
       >
         {/*{renderCourses} */}
         {({ data, error, loading }) => {
@@ -45,6 +34,32 @@ const Courses = () => {
                     <Link to={`course/${id}/edit`} className="btn btn-secondary">
                       Edit
                   </Link>
+                    <Mutation mutation={DELETE_COURSE_MUTATION}
+                      variables={{ id }}
+                      update={(cache, { data: { deleteCourse } }) => {
+                        const { courseFeed } = cache.readQuery({
+                          query: COURSE_FEED_QUERY
+                        })
+                        cache.writeQuery({
+                          query: COURSE_FEED_QUERY,
+                          data: {
+                            courseFeed: courseFeed.filter(course => course.id !== deleteCourse.id)
+                          }
+                        })
+                      }}
+                    >
+                      {(deleteCourse, { data, error, loading }) => {
+                        return (
+                          <button style={{ marginLeft: '10px' }}
+                            className="btn btn-danger"
+                            onClick={async () => {
+                              await deleteCourse()
+                            }}
+                          >Delete
+                          </button>
+                        )
+                      }}
+                    </Mutation>
                   </div>
                 </div>
               );
@@ -55,5 +70,22 @@ const Courses = () => {
     </div>
   )
 }
-
+export const DELETE_COURSE_MUTATION = gql`
+mutation DeleteCourse($id: ID!) {
+  deleteCourse(id: $id) {
+    id
+    name
+  }
+}
+`;
+export const COURSE_FEED_QUERY = gql`
+  {
+    courseFeed {
+      id
+      name
+      description
+      isPublished
+    }
+  }
+`;
 export default Courses
