@@ -1,8 +1,19 @@
 import React, { Component } from 'react';
 import { gql } from 'apollo-boost';
-import { Query } from 'react-apollo';
+import { Query, Mutation } from 'react-apollo';
+
 class EditCourse extends Component {
+  state = {
+    name: '',
+    description: ''
+  };
+  onChangeHandler = e => {
+    const name = e.target.name;
+    const value = e.target.value;
+    this.setState({ [name]: value });
+  };
   render() {
+    const { name, description } = this.state;
     return (
       <Query
         query={SINGLE_COURSE_QUERY}
@@ -12,10 +23,56 @@ class EditCourse extends Component {
           if (loading) return <div>...Loading</div>;
           if (error) return <div>Error</div>;
           return (
-            <div>
-              <h1>{course.name}</h1>
-              <p>{course.description}</p>
-            </div>
+            <Mutation mutation={UPDATE_COURSE_MUTATION}
+              onCompleted={() => this.props.history.push('/')}
+            >
+              {(updateCourse, { data, error, loading }) => (
+                <div className="container">
+                  <div className="card">
+                    <div className="card-title">
+                    </div>
+                    <div className="card-body">
+                      <form onSubmit={async e => {
+                        e.preventDefault()
+                        await updateCourse({
+                          variables: {
+                            id: this.props.match.params.id,
+                            name: this.state.name,
+                            description: this.state.description
+                          }
+                        })
+                      }}>
+                        <div className="form-group">
+                          <label htmlFor="name">Name</label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            name="name"
+                            placeholder="Enter name"
+                            defaultValue={course.name}
+                            onChange={this.onChangeHandler}
+                          />
+                        </div>
+                        <div className="form-group">
+                          <label htmlFor="description">Description</label>
+                          <textarea
+                            className="form-control"
+                            name="description"
+                            placeholder="Enter description"
+                            rows="3"
+                            defaultValue={course.description}
+                            onChange={this.onChangeHandler}
+                          />
+                        </div>
+                        <button type="submit" className="btn btn-secondary btn-block">
+                          Save
+                  </button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </Mutation>
           );
         }}
       </Query>
@@ -31,5 +88,15 @@ export const SINGLE_COURSE_QUERY = gql`
       isPublished
     }
   }
+`;
+const UPDATE_COURSE_MUTATION = gql`
+mutation UpdateCourse($id: ID!, $name: String, $description: String) {
+  updateCourse(id: $id,  name: $name, description: $description) {
+    id
+    name
+    description
+    isPublished
+  }
+}
 `;
 export default EditCourse;
