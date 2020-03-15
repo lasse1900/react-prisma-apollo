@@ -68,7 +68,7 @@ class CreateCourse extends Component {
                       onChange={this.onChangeHandler}
                     />
                   </div>
-                  <button type="submit" className="btn btn-secondary btn-block">
+                  <button type="submit" className="btn btn-outline-secondary btn-block">
                     Save
               </button>
                 </form>

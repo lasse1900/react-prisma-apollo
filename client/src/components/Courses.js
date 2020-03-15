@@ -31,7 +31,7 @@ const Courses = () => {
                   <div className="card-body">
                     <div className="card-title"><p>{name}</p></div>
                     <div className="card-text">{description}</div>
-                    <Link to={`course/${id}/edit`} className="btn btn-secondary">
+                    <Link to={`course/${id}/edit`} className="btn btn-outline-secondary btn-sm">
                       Edit
                   </Link>
                     <Mutation mutation={DELETE_COURSE_MUTATION}
@@ -51,7 +51,7 @@ const Courses = () => {
                       {(deleteCourse, { data, error, loading }) => {
                         return (
                           <button style={{ marginLeft: '10px' }}
-                            className="btn btn-danger"
+                            className="btn btn-outline-danger btn-sm"
                             onClick={async () => {
                               await deleteCourse()
                             }}
