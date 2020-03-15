@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
+// const { getUserId } = require('../utils')
 
 function createDraft(parent, { title, text }, ctx, info) {
   return ctx.db.mutation.createPost(
@@ -13,11 +14,17 @@ function createDraft(parent, { title, text }, ctx, info) {
   );
 }
 function createCourse(parent, { name, description }, ctx, info) {
+  // const userId = getUserId(ctx)
   return ctx.db.mutation.createCourse(
     {
       data: {
         name,
-        description
+        description,
+        // postedBy: {
+        //   connect: {
+        //     id: userId
+        //   }
+        // }
       }
     },
     info
