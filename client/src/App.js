@@ -5,6 +5,7 @@ import Courses from './components/Courses';
 import CreateCourse from './components/CreateCourse';
 import Header from './components/Header';
 import EditCourse from './components/EditCourse';
+import Auth from './components/Auth';
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
       <Header />
       <Switch>
         <Route exact path="/" component={Courses}></Route>
+        <Route exact path="/login" component={Auth}></Route>
         <Route exact path="/create" component={CreateCourse}></Route>
         <Route exact path="/course/:id/edit" component={EditCourse} />
       </Switch>
