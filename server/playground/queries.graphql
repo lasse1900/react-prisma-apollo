@@ -73,3 +73,14 @@ mutation SignUp {
     token
   }
 }
+
+mutation SignUp {
+  signup(email: "john.doe.gmail.com",
+  password: "secret") {
+		token
+    user {
+      id
+      email
+    }
+  }
+}
