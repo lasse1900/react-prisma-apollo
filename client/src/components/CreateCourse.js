@@ -17,6 +17,7 @@ class CreateCourse extends Component {
     const { name, description } = this.state;
     return (
       <Mutation mutation={CREATE_COURSE_MUTATION}
+        onCompleted={() => this.props.history.push('/')}
         update={(cache, mutationResults) => {
           // fetch the courseFeed from the cache
           const { courseFeed } = cache.readQuery({
