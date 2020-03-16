@@ -8,30 +8,47 @@ import { AUTH_TOKEN } from '../constants'
 class Auth extends Component {
   state = {
     email: '',
-    password: ''
+    password: '',
+    loginStatus: false // check the route of the app it should be login or signup
+  }
+  componentDidMount() {
+    console.log(this.props)
+  }
+  static getDerivedStateFromProps(props) {
+    const { path } = props.match
+    if (path === '/login') {
+      return { loginStatus: true }
+    } else {
+      return { loginStatus: false }
+    }
   }
   onChangeHandler = e => {
     const name = e.target.name;
     const value = e.target.value;
     this.setState({ [name]: value });
   };
-  onSubmitHandler = async (login, e) => {
+  onSubmitHandler = async (authMutate, e) => {
     e.preventDefault()
-    const authResults = await login()
-    localStorage.setItem(AUTH_TOKEN, authResults.data.login.token)
+    const authResults = await authMutate()
+    if (this.state.loginStatus) {
+      localStorage.setItem(AUTH_TOKEN, authResults.data.login.token)
+    } else {
+      localStorage.setItem(AUTH_TOKEN, authResults.data.signup.token)
+    }
     this.props.history.push('/')
   }
   render() {
     const { email, password } = this.state
+    const { loginStatus } = this.state
     return (
-      <Mutation mutation={LOGIN_MUTATION} variables={{ email, password }}>
-        {(login, { data, error, loading }) => {
+      <Mutation mutation={loginStatus ? LOGIN_MUTATION : SIGNUP_MUTATION} variables={{ email, password }}>
+        {(authMutate, { data, error, loading }) => {
           if (error) return <div>Error</div>
           if (loading) return <div>...Loading</div>
           return (
             <div className="auth-form">
-              <form className="form-signin" onSubmit={this.onSubmitHandler.bind(this, login)}>
-                <h1 className="h3 mb-3 font-weight-normal">Please sign in</h1>
+              <form className="form-signin" onSubmit={this.onSubmitHandler.bind(this, authMutate)}>
+                <h1 className="h3 mb-3 font-weight-normal">Please {loginStatus ? 'login' : 'signup'} </h1>
                 <label htmlFor="inputEmail" className="sr-only">Email address</label>
                 <input
                   name="email"
@@ -54,7 +71,10 @@ class Auth extends Component {
                   onChange={this.onChangeHandler}
                   required
                 />
-                <button className="btn btn-lg btn-secondary btn-block" type="submit">Sign in</button>
+                <button
+                  className="btn btn-lg btn-secondary btn-block"
+                  type="submit">
+                  {loginStatus ? 'Login' : 'Signup'}</button>
               </form>
             </div>
           )
@@ -63,6 +83,16 @@ class Auth extends Component {
     )
   }
 }
+export const SIGNUP_MUTATION = gql`
+mutation Signup($email: String!, $password: String!){
+  signup(email: $email, password: $password){
+    token
+    user {
+      id
+    }
+  }
+}
+`;
 export const LOGIN_MUTATION = gql`
 mutation Login($email: String!, $password: String!){
   login(email: $email, password: $password){
