@@ -75,12 +75,20 @@ mutation SignUp {
 }
 
 mutation SignUp {
-  signup(email: "john.doe.gmail.com",
-  password: "secret") {
-		token
+  signup(email: "john.doe.gmail.com", password: "secret") {
+    token
     user {
       id
       email
     }
+  }
+}
+
+# pagination
+
+query CourseFeed {
+  courseFeed(first: 4, skip: 1) {
+    id
+    description
   }
 }
