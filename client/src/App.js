@@ -6,20 +6,25 @@ import CreateCourse from './components/CreateCourse';
 import Header from './components/Header';
 import EditCourse from './components/EditCourse';
 import Auth from './components/Auth';
+import { AuthRoute, UnauthRoute } from 'react-router-auth'
+import { AUTH_TOKEN } from './constants';
 
-function App() {
-  return (
-    <div>
-      <Header />
-      <Switch>
-        <Route exact path="/" component={Courses}></Route>
-        <Route exact path="/login" component={Auth}></Route>
-        <Route exact path="/signup" component={Auth}></Route>
-        <Route exact path="/create" component={CreateCourse}></Route>
-        <Route exact path="/course/:id/edit" component={EditCourse} />
-      </Switch>
-    </div>
-  );
+class App extends React.Component {
+  render() {
+    const isAuth = localStorage.getItem(AUTH_TOKEN) ? true : false
+    return (
+      <div>
+        <Header />
+        <Switch>
+          <Route exact path="/" component={Courses}></Route>
+          <UnauthRoute exact path="/login" redirectTo='/' component={Auth} authenticated={isAuth} />
+          <UnauthRoute exact path="/signup" redirectTo='/' component={Auth} authenticated={isAuth} />
+          <AuthRoute exact path="/create" redirectTo='/login' component={CreateCourse} authenticated={isAuth} />
+          <AuthRoute exact path="/course/:id/edit" redirectTo='/login' component={EditCourse} authenticated={isAuth} />
+        </Switch>
+      </div>
+    );
+  }
 }
 
 export default App;
