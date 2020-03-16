@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Mutation } from 'react-apollo'
 import { gql } from 'apollo-boost'
 import { COURSE_FEED_QUERY } from './Courses'
+import ErrorMessage from './ErrorMessage';
 
 class CreateCourse extends Component {
   state = {
@@ -32,51 +33,55 @@ class CreateCourse extends Component {
         }}
       >
 
-        {(createCourse, { data, error, loading }) => (
-          <div className="container">
-            <div className="card">
-              <div className="card-title">
-              </div>
-              <div className="card-body">
-                <form onSubmit={async e => {
-                  e.preventDefault()
-                  await createCourse({
-                    variables: {
-                      name: this.state.name,
-                      description: this.state.description
-                    }
-                  })
-                }}>
-                  <div className="form-group">
-                    <label htmlFor="name">Name</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      name="name"
-                      placeholder="Enter name"
-                      value={name}
-                      onChange={this.onChangeHandler}
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="description">Description</label>
-                    <textarea
-                      className="form-control"
-                      name="description"
-                      placeholder="Enter description"
-                      rows="3"
-                      value={description}
-                      onChange={this.onChangeHandler}
-                    />
-                  </div>
-                  <button type="submit" className="btn btn-outline-secondary btn-block">
-                    Save
+        {(createCourse, { data, error, loading }) => {
+          if (error) return <ErrorMessage error={error} />;
+          return (
+            <div className="container">
+              <div className="card">
+                <div className="card-title">
+                </div>
+                <div className="card-body">
+                  <form onSubmit={async e => {
+                    e.preventDefault()
+                    await createCourse({
+                      variables: {
+                        name: this.state.name,
+                        description: this.state.description
+                      }
+                    })
+                  }}>
+                    <div className="form-group">
+                      <label htmlFor="name">Name</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        name="name"
+                        placeholder="Enter name"
+                        value={name}
+                        onChange={this.onChangeHandler}
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="description">Description</label>
+                      <textarea
+                        className="form-control"
+                        name="description"
+                        placeholder="Enter description"
+                        rows="3"
+                        value={description}
+                        onChange={this.onChangeHandler}
+                      />
+                    </div>
+                    <button type="submit" className="btn btn-outline-secondary btn-block">
+                      Save
               </button>
-                </form>
+                  </form>
+                </div>
               </div>
             </div>
-          </div>
-        )}
+          )
+        }
+        }
       </Mutation>
     );
   }

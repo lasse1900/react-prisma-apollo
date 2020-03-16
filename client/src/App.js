@@ -8,6 +8,7 @@ import EditCourse from './components/EditCourse';
 import Auth from './components/Auth';
 import { AuthRoute, UnauthRoute } from 'react-router-auth'
 import { AUTH_TOKEN } from './constants';
+import NotFound from './components/NotFound'
 
 class App extends React.Component {
   render() {
@@ -21,6 +22,7 @@ class App extends React.Component {
           <UnauthRoute exact path="/signup" redirectTo='/' component={Auth} authenticated={isAuth} />
           <AuthRoute exact path="/create" redirectTo='/login' component={CreateCourse} authenticated={isAuth} />
           <AuthRoute exact path="/course/:id/edit" redirectTo='/login' component={EditCourse} authenticated={isAuth} />
+          <Route component={NotFound} />
         </Switch>
       </div>
     );
