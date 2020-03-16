@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { gql } from 'apollo-boost';
 import { Query, Mutation } from 'react-apollo';
 import ErrorMessage from './ErrorMessage';
+import Spinner from './Spinner/Spinner'
 
 class EditCourse extends Component {
   state = {
@@ -21,14 +22,14 @@ class EditCourse extends Component {
         variables={{ id: this.props.match.params.id }}
       >
         {({ data: { course }, error, loading }) => {
-          if (loading) return <div>...Loading</div>;
+          if (loading) return <Spinner />
           if (error) return <ErrorMessage error={error} />;
           return (
             <Mutation mutation={UPDATE_COURSE_MUTATION}
               onCompleted={() => this.props.history.push('/')}
             >
               {(updateCourse, { data, error, loading }) => {
-                if (loading) return <div>...Loading</div>
+                if (loading) return <Spinner />
                 if (error) return <ErrorMessage error={error} />;
                 return (
                   <div className="container">

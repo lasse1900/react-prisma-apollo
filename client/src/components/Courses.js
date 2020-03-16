@@ -4,6 +4,7 @@ import { gql } from 'apollo-boost'
 import { Link } from 'react-router-dom';
 import { AUTH_TOKEN } from '../constants'
 import ErrorMessage from './ErrorMessage';
+import Spinner from './Spinner/Spinner'
 
 class Courses extends React.Component {
   render() {
@@ -15,8 +16,8 @@ class Courses extends React.Component {
         >
           {/*{renderCourses} */}
           {({ data, error, loading }) => {
-            if (loading) return <p>...Loading</p>;
-            if (error) return <ErrorMessage error={error}/>;
+            if (loading) return <Spinner />;
+            if (error) return <ErrorMessage error={error} />;
             return data.courseFeed.map(
               ({ id, description, name, isPublished }) => {
                 return (
