@@ -2,16 +2,49 @@ import React from 'react';
 import { Query, Mutation } from 'react-apollo';
 import { gql } from 'apollo-boost';
 import { Link } from 'react-router-dom';
-import { AUTH_TOKEN } from '../constants';
+import { AUTH_TOKEN, COURSES_PER_PAGE } from '../constants';
 import ErrorMessage from './ErrorMessage';
 import Spinner from './Spinner/Spinner';
 
+const divStyle = {
+  color: 'grey',
+  fontSize: '4'
+};
+
 class Courses extends React.Component {
+  state = {
+    page: 1
+  }
+  getQueryVariables = () => {
+    const { page } = this.state
+    const first = COURSES_PER_PAGE
+    const skip = (page - 1) * COURSES_PER_PAGE
+    return {
+      first,
+      skip
+    }
+  }
+  prevPage = () => {
+    const { page } = this.state
+    if (page > 1) {
+      this.setState(prevState => ({
+        page: prevState.page - 1
+      }))
+    }
+  }
+  nextPage = (data) => {
+    const { page } = this.state
+    if (page <= data.courseFeed.count / COURSES_PER_PAGE) {
+      this.setState(prevState => ({
+        page: prevState.page + 1
+      }))
+    }
+  }
   render() {
     const authToken = localStorage.getItem(AUTH_TOKEN);
     return (
       <div>
-        <Query query={COURSE_FEED_QUERY}>
+        <Query query={COURSE_FEED_QUERY} variables={this.getQueryVariables()}>
           {({ data, error, loading }) => {
             if (loading) return <Spinner />;
             if (error) return <ErrorMessage error={error} />;
@@ -71,16 +104,22 @@ class Courses extends React.Component {
                   }
                 )}
                 <nav aria-label="Page navigation example">
-                  <ul class="pagination justify-content-center">
-                    <li class="page-item">
-                      <div class="page-link" style={{ cursor: 'pointer' }}>
-                        Previous
+                  <ul className="pagination justify-content-center">
+                    <li className="page-item">
+                      <div className="page-link"
+                        style={{ cursor: 'pointer' }}
+                        onClick={this.prevPage}
+                      >
+                        <div style={divStyle}>Previous</div>
                       </div>
                     </li>
 
-                    <li class="page-item">
-                      <div class="page-link" style={{ cursor: 'pointer' }}>
-                        Next
+                    <li className="page-item">
+                      <div className="page-link"
+                        style={{ cursor: 'pointer' }}
+                        onClick={this.nextPage.bind(this, data)}
+                      >
+                        <div style={divStyle}>Next</div>
                       </div>
                     </li>
                   </ul>
@@ -103,8 +142,8 @@ export const DELETE_COURSE_MUTATION = gql`
   }
 `;
 export const COURSE_FEED_QUERY = gql`
-  {
-    courseFeed {
+query courseFeed($first: Int, $skip: Int ) {
+    courseFeed(first: $first, skip: $skip) {
       count
       courses {
         id
