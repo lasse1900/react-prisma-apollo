@@ -92,3 +92,35 @@ query CourseFeed {
     description
   }
 }
+
+query CourseFeed {
+  courseFeed(first: 4, skip: 1) {
+    count
+  }
+}
+
+query CourseFeed {
+  courseFeed(first: 4, skip: 1) {
+    courses {
+      id
+      name
+      description
+    }
+  }
+}
+
+query CourseFeed {
+  courseFeed(first: 6, skip: 0) {
+    courses {
+      id
+      name
+      description
+      isPublished
+      postedBy {
+        id
+        email
+      }
+    }
+    count
+  }
+}
