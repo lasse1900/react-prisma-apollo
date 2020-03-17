@@ -124,3 +124,18 @@ query CourseFeed {
     count
   }
 }
+
+# database dev
+query courses{
+  courses(where:{
+    AND : [
+      {name_contains: "Node"},
+      {description_contains: "Udemy"}
+    ]
+  })
+  {
+    name
+    id
+    description
+  }
+}
