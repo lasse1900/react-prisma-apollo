@@ -30,6 +30,11 @@ class Header extends React.Component {
                   Courses
                 </Link>
               </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/search">
+                  Search
+                </Link>
+              </li>
               {authToken && (
                 <li className="nav-item">
                   <Link className="nav-link" to="/create">
@@ -43,10 +48,10 @@ class Header extends React.Component {
               {authToken ? (
                 <li className="nav-item" style={{ cursor: 'pointer' }}>
                   <div className="nav-link"
-                  onClick={() => {
-                    localStorage.removeItem(AUTH_TOKEN)
-                    this.props.history.push('/')
-                  }}
+                    onClick={() => {
+                      localStorage.removeItem(AUTH_TOKEN)
+                      this.props.history.push('/')
+                    }}
                   >
                     Logout
                 </div>
